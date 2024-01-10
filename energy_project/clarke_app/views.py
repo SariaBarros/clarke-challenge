@@ -9,7 +9,7 @@ class Fornecedores_por_consumo(APIView):
     def get(self, request, consumo, format=None): 
         if consumo is None:
            return Response({"detail": "Consumo é um parâmetro obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
-        fornecedores = Fornecedor.objects.filter(limite_minimo_kwh__lte=consumo)
+        fornecedores = Fornecedor.objects.filter(limite_minimo_kwh__lte=consumo).order_by('limite_minimo_kwh').values()
         serializacao = FornecedorSerializer(fornecedores, many=True)
         return Response(serializacao.data, status=status.HTTP_302_FOUND)
         
